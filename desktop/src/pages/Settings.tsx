@@ -20,6 +20,7 @@ import { SkillList } from '../components/skills/SkillList'
 import { SkillDetail } from '../components/skills/SkillDetail'
 import { ComputerUseSettings } from './ComputerUseSettings'
 import { useUIStore, type SettingsTab } from '../stores/uiStore'
+import { ClaudeOfficialLogin } from '../components/settings/ClaudeOfficialLogin'
 
 export function Settings() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('providers')
@@ -138,23 +139,33 @@ function ProviderSettings() {
 
       {/* Official provider — always visible at top */}
       <div
-        className={`relative flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all mb-2 ${
+        className={`relative flex flex-col rounded-xl border transition-all mb-2 ${
           isOfficialActive
             ? 'border-[var(--color-brand)] bg-[var(--color-primary-fixed)]'
-            : 'border-[var(--color-border)] hover:border-[var(--color-border-focus)] cursor-pointer'
+            : 'border-[var(--color-border)] hover:border-[var(--color-border-focus)]'
         }`}
-        onClick={() => !isOfficialActive && handleActivateOfficial()}
       >
-        <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${isOfficialActive ? 'bg-[var(--color-success)]' : 'bg-[var(--color-text-tertiary)]'}`} />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-[var(--color-text-primary)]">{t('settings.providers.officialName')}</span>
-            {isOfficialActive && (
-              <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[var(--color-brand)] text-white leading-none">{t('common.active')}</span>
-            )}
+        <div
+          className={`flex items-center gap-4 px-4 py-3.5 ${!isOfficialActive ? 'cursor-pointer' : ''}`}
+          onClick={() => !isOfficialActive && handleActivateOfficial()}
+        >
+          <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${isOfficialActive ? 'bg-[var(--color-success)]' : 'bg-[var(--color-text-tertiary)]'}`} />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-[var(--color-text-primary)]">{t('settings.providers.officialName')}</span>
+              {isOfficialActive && (
+                <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-[var(--color-brand)] text-white leading-none">{t('common.active')}</span>
+              )}
+            </div>
+            <div className="text-xs text-[var(--color-text-tertiary)] mt-0.5">{t('settings.providers.officialDesc')}</div>
           </div>
-          <div className="text-xs text-[var(--color-text-tertiary)] mt-0.5">{t('settings.providers.officialDesc')}</div>
         </div>
+
+        {isOfficialActive && (
+          <div className="px-4 pb-4 pt-2 border-t border-[var(--color-border-separator)]">
+            <ClaudeOfficialLogin />
+          </div>
+        )}
       </div>
 
       {/* Saved providers */}
